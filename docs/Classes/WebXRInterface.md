@@ -120,7 +120,7 @@ You can use both methods to allow your game or app to support a wider or narrowe
 
 ## Tutorials
 
-- [How to make a VR game for WebXR with Redot 4](https://www.snopekgames.com/tutorial/2023/how-make-vr-game-webxr-Redot-4)
+- [How to make a VR game for WebXR with Redot 4](https://www.snopekgames.com/tutorial/2023/how-make-vr-game-webxr-godot-4)
 
 <!-- classref-reftable-group -->
 
@@ -412,7 +412,7 @@ A comma-separated list of features that were successfully enabled by [XRInterfac
 
 This may include features requested by setting [required_features](WebXRInterface.md#WebXRInterface_property_required_features) and [optional_features](WebXRInterface.md#WebXRInterface_property_optional_features), and will only be available after [session_started](WebXRInterface.md#WebXRInterface_signal_session_started) has been emitted.
 
-\ **Note:** This may not be support by all web browsers, in which case it will be an empty string.
+\ **Note:** This may not be supported by all web browsers, in which case it will be an empty string.
 
 <hr class="classref-item-separator"/>
 
@@ -427,7 +427,7 @@ This may include features requested by setting [required_features](WebXRInterfac
 - `void` **set_optional_features**\ (\ value\: [String](String.md)\ )
 - [String](String.md) **get_optional_features**\ (\ )
 
-A comma-seperated list of optional features used by [XRInterface.initialize()](XRInterface.md#XRInterface_method_initialize) when setting up the WebXR session.
+A comma-separated list of optional features used by [XRInterface.initialize()](XRInterface.md#XRInterface_method_initialize) when setting up the WebXR session.
 
 If a user's browser or device doesn't support one of the given features, initialization will continue, but you won't be able to use the requested feature.
 
@@ -464,7 +464,7 @@ Possible values come from [WebXR's XRReferenceSpaceType](https://developer.mozil
 - `void` **set_requested_reference_space_types**\ (\ value\: [String](String.md)\ )
 - [String](String.md) **get_requested_reference_space_types**\ (\ )
 
-A comma-seperated list of reference space types used by [XRInterface.initialize()](XRInterface.md#XRInterface_method_initialize) when setting up the WebXR session.
+A comma-separated list of reference space types used by [XRInterface.initialize()](XRInterface.md#XRInterface_method_initialize) when setting up the WebXR session.
 
 The reference space types are requested in order, and the first one supported by the user's device or browser will be used. The [reference_space_type](WebXRInterface.md#WebXRInterface_property_reference_space_type) property contains the reference space type that was ultimately selected.
 
@@ -485,7 +485,7 @@ Possible values come from [WebXR's XRReferenceSpaceType](https://developer.mozil
 - `void` **set_required_features**\ (\ value\: [String](String.md)\ )
 - [String](String.md) **get_required_features**\ (\ )
 
-A comma-seperated list of required features used by [XRInterface.initialize()](XRInterface.md#XRInterface_method_initialize) when setting up the WebXR session.
+A comma-separated list of required features used by [XRInterface.initialize()](XRInterface.md#XRInterface_method_initialize) when setting up the WebXR session.
 
 If a user's browser or device doesn't support one of the given features, initialization will fail and [session_failed](WebXRInterface.md#WebXRInterface_signal_session_failed) will be emitted.
 
@@ -588,7 +588,7 @@ Use this method to get information about the input source that triggered one of 
 
 - [squeeze](WebXRInterface.md#WebXRInterface_signal_squeeze)\\ 
 
-- [squeezestart](WebXRInterface.md#WebXRInterface_signal_squeezestart)
+- [squeezeend](WebXRInterface.md#WebXRInterface_signal_squeezeend)
 
 <hr class="classref-item-separator"/>
 

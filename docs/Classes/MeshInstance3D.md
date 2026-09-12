@@ -120,6 +120,14 @@ MeshInstance3D is a node that takes a [Mesh](Mesh.md) resource and adds it to th
       <td>[get_surface_override_material_count](#MeshInstance3D_method_get_surface_override_material_count)\ (\ ) <span class="const">const</span></td>
     </tr>
     <tr>
+      <td>[Dictionary](Dictionary.md)</td>
+      <td>[intersect_ray](#MeshInstance3D_method_intersect_ray)\ (\ origin\: [Vector3](Vector3.md), dir\: [Vector3](Vector3.md), include_uv\: [bool](bool.md) = false\ ) <span class="const">const</span></td>
+    </tr>
+    <tr>
+      <td>[Dictionary](Dictionary.md)</td>
+      <td>[intersect_segment](#MeshInstance3D_method_intersect_segment)\ (\ from\: [Vector3](Vector3.md), to\: [Vector3](Vector3.md), include_uv\: [bool](bool.md) = false\ ) <span class="const">const</span></td>
+    </tr>
+    <tr>
       <td>`void`</td>
       <td>[set_blend_shape_value](#MeshInstance3D_method_set_blend_shape_value)\ (\ blend_shape_idx\: [int](int.md), value\: [float](float.md)\ )</td>
     </tr>
@@ -324,6 +332,42 @@ Returns the override [Material](Material.md) for the specified `surface` of the 
 [int](int.md) **get_surface_override_material_count**\ (\ ) <span class="const">const</span> [🔗](#MeshInstance3D_method_get_surface_override_material_count)
 
 Returns the number of surface override materials. This is equivalent to [Mesh.get_surface_count()](Mesh.md#Mesh_method_get_surface_count). See also [get_surface_override_material()](MeshInstance3D.md#MeshInstance3D_method_get_surface_override_material).
+
+<hr class="classref-item-separator"/>
+
+<a id="MeshInstance3D_method_intersect_ray"></a>
+
+<!-- classref-method -->
+
+[Dictionary](Dictionary.md) **intersect_ray**\ (\ origin\: [Vector3](Vector3.md), dir\: [Vector3](Vector3.md), include_uv\: [bool](bool.md) = false\ ) <span class="const">const</span> [🔗](#MeshInstance3D_method_intersect_ray)
+
+Performs a ray intersection test against the visual mesh.
+
+Returns a [Dictionary](Dictionary.md) with the following keys: ``success``, ``position``, ``normal``, ``surface_index``, ``face_index``, and ``material``.
+
+The keys ``surface_index`` and ``face_index`` are indices into their respective mesh data, ``position`` and ``normal`` returns the position the mesh was intersected at and the normal of the intersected face, and ``material`` is the material of the intersected face.
+
+If `include_uv` is ``true``, then the UV and UV2 of the face at the intersected point is calculated and returned as the keys ``uv`` and ``uv2``.
+
+If the key ``success`` is true, then the ray intersected the mesh.
+
+<hr class="classref-item-separator"/>
+
+<a id="MeshInstance3D_method_intersect_segment"></a>
+
+<!-- classref-method -->
+
+[Dictionary](Dictionary.md) **intersect_segment**\ (\ from\: [Vector3](Vector3.md), to\: [Vector3](Vector3.md), include_uv\: [bool](bool.md) = false\ ) <span class="const">const</span> [🔗](#MeshInstance3D_method_intersect_segment)
+
+Performs a line segment intersection test against the visual mesh.
+
+Returns a [Dictionary](Dictionary.md) with the following keys: ``success``, ``position``, ``normal``, ``surface_index``, ``face_index``, and ``material``.
+
+The keys ``surface_index`` and ``face_index`` are indices into their respective mesh data, ``position`` and ``normal`` returns the position the mesh was intersected at and the normal of the intersected face, and ``material`` is the material of the intersected face.
+
+If `include_uv` is ``true``, then the UV and UV2 of the face at the intersected point is calculated and returned as the keys ``uv`` and ``uv2``.
+
+If the key ``success`` is true, then the segment intersected the mesh.
 
 <hr class="classref-item-separator"/>
 
