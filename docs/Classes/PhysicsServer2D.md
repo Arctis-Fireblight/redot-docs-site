@@ -588,7 +588,55 @@ Constant to set/get the default solver bias for all physics constraints. A solve
 
 [SpaceParameter](PhysicsServer2D.md#enum_PhysicsServer2D_SpaceParameter) **SPACE_PARAM_SOLVER_ITERATIONS** = `8`
 
-Constant to set/get the number of solver iterations for all contacts and constraints. The greater the number of iterations, the more accurate the collisions will be. However, a greater number of iterations requires more CPU power, which can decrease performance. The default value of this parameter is [ProjectSettings.physics/2d/solver/solver_iterations](ProjectSettings.md#ProjectSettings_property_physics/2d/solver/solver_iterations).<hr class="classref-item-separator"/>
+Constant to set/get the number of solver iterations for all contacts and constraints. The greater the number of iterations, the more accurate the collisions will be. However, a greater number of iterations requires more CPU power, which can decrease performance. The default value of this parameter is [ProjectSettings.physics/2d/solver/solver_iterations](ProjectSettings.md#ProjectSettings_property_physics/2d/solver/solver_iterations).<a id="PhysicsServer2D_constant_SPACE_PARAM_SOLVER_MIN_CONSTRAINTS_FOR_THREADING"></a>
+
+<!-- classref-enumeration-constant -->
+
+[SpaceParameter](PhysicsServer2D.md#enum_PhysicsServer2D_SpaceParameter) **SPACE_PARAM_SOLVER_MIN_CONSTRAINTS_FOR_THREADING** = `9`
+
+Constant to set/get the minimum number of constraints a physics step must have before constraint setup and eligible island solving are distributed across the [WorkerThreadPool](WorkerThreadPool.md). Below this threshold the work is done on the calling thread instead, avoiding thread dispatch and synchronization overhead that would otherwise outweigh the benefit for light workloads.
+
+How constraint setup compares against this threshold depends on [SPACE_PARAM_SOLVER_SETUP_THREADING_MODE](PhysicsServer2D.md#PhysicsServer2D_constant_SPACE_PARAM_SOLVER_SETUP_THREADING_MODE): the static mode uses the raw candidate constraint count, while the predicted modes use an estimate of useful work (candidate count scaled by a recent step's ratio of active, post-prune, to candidate constraints), which reduces unnecessary threading in scenes with many broadphase pairs but few real contacts. Island solving always uses the *actual* current post-prune constraint count, and additionally requires more than one island, since each island is a single unit of parallel work (so reaching the threshold does not by itself thread solving).
+
+A value of ``0`` threads as aggressively as possible, that is, whenever there is actual parallel work to distribute. The default value of this parameter is [ProjectSettings.physics/2d/solver/min_constraints_for_threading](ProjectSettings.md#ProjectSettings_property_physics/2d/solver/min_constraints_for_threading).<a id="PhysicsServer2D_constant_SPACE_PARAM_SOLVER_SETUP_THREADING_MODE"></a>
+
+<!-- classref-enumeration-constant -->
+
+[SpaceParameter](PhysicsServer2D.md#enum_PhysicsServer2D_SpaceParameter) **SPACE_PARAM_SOLVER_SETUP_THREADING_MODE** = `10`
+
+Constant to set/get how the 2D solver decides whether to distribute constraint *setup* across the [WorkerThreadPool](WorkerThreadPool.md) (see the [SolverSetupThreadingMode](PhysicsServer2D.md#enum_PhysicsServer2D_SolverSetupThreadingMode) values). Only affects setup scheduling; island solving always uses the actual post-prune work. The default value of this parameter is [ProjectSettings.physics/2d/solver/setup_threading_mode](ProjectSettings.md#ProjectSettings_property_physics/2d/solver/setup_threading_mode).<a id="PhysicsServer2D_constant_SPACE_PARAM_SOLVER_SETUP_PREDICTION_WINDOW"></a>
+
+<!-- classref-enumeration-constant -->
+
+[SpaceParameter](PhysicsServer2D.md#enum_PhysicsServer2D_SpaceParameter) **SPACE_PARAM_SOLVER_SETUP_PREDICTION_WINDOW** = `11`
+
+Constant to set/get how many past steps [SOLVER_SETUP_THREADING_PREDICTED_BIASED](PhysicsServer2D.md#PhysicsServer2D_constant_SOLVER_SETUP_THREADING_PREDICTED_BIASED) maxes its work estimate over (the *K* in max-over-K). Clamped to ``1``\\ –\ ``8``; ``1`` makes the biased mode behave like [SOLVER_SETUP_THREADING_PREDICTED](PhysicsServer2D.md#PhysicsServer2D_constant_SOLVER_SETUP_THREADING_PREDICTED). Larger values bias further toward threading (they keep threading for more steps after a heavy one). Has no effect in the static or (unbiased) predicted modes. The default value of this parameter is [ProjectSettings.physics/2d/solver/setup_prediction_window](ProjectSettings.md#ProjectSettings_property_physics/2d/solver/setup_prediction_window).<hr class="classref-item-separator"/>
+
+<a id="enum_PhysicsServer2D_SolverSetupThreadingMode"></a>
+
+<!-- classref-enumeration -->
+
+enum **SolverSetupThreadingMode**: [🔗](#enum_PhysicsServer2D_SolverSetupThreadingMode)
+
+<a id="PhysicsServer2D_constant_SOLVER_SETUP_THREADING_STATIC"></a>
+
+<!-- classref-enumeration-constant -->
+
+[SolverSetupThreadingMode](PhysicsServer2D.md#enum_PhysicsServer2D_SolverSetupThreadingMode) **SOLVER_SETUP_THREADING_STATIC** = `0`
+
+Thread constraint setup purely on the raw candidate constraint count (no prediction). Predictable and free of transition artifacts, but threads setup even for scenes with many broadphase pairs that produce few real contacts.<a id="PhysicsServer2D_constant_SOLVER_SETUP_THREADING_PREDICTED"></a>
+
+<!-- classref-enumeration-constant -->
+
+[SolverSetupThreadingMode](PhysicsServer2D.md#enum_PhysicsServer2D_SolverSetupThreadingMode) **SOLVER_SETUP_THREADING_PREDICTED** = `1`
+
+Thread constraint setup based on an estimate of useful work: the candidate count scaled by the *previous* completed step's active/candidate ratio. Avoids threading light workloads, but assumes temporal coherence — an abrupt workload change costs one suboptimally-scheduled step before the estimate adapts, and workloads that alternate sparse/dense every step defeat it. This is the default.<a id="PhysicsServer2D_constant_SOLVER_SETUP_THREADING_PREDICTED_BIASED"></a>
+
+<!-- classref-enumeration-constant -->
+
+[SolverSetupThreadingMode](PhysicsServer2D.md#enum_PhysicsServer2D_SolverSetupThreadingMode) **SOLVER_SETUP_THREADING_PREDICTED_BIASED** = `2`
+
+As [SOLVER_SETUP_THREADING_PREDICTED](PhysicsServer2D.md#PhysicsServer2D_constant_SOLVER_SETUP_THREADING_PREDICTED), but takes the maximum estimate over the last *K* steps (K = [ProjectSettings.physics/2d/solver/setup_prediction_window](ProjectSettings.md#ProjectSettings_property_physics/2d/solver/setup_prediction_window), default 2), biasing toward threading. This trades a costly mis-serialized dense step for a cheap redundantly-threaded sparse step across transitions, which removes the alternating-workload regression at the cost of adapting a step or two slower when a workload becomes persistently sparse.<hr class="classref-item-separator"/>
 
 <a id="enum_PhysicsServer2D_ShapeType"></a>
 
